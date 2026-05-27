@@ -7,6 +7,7 @@
 #include "tensorflow/lite/micro/micro_interpreter.h"
 #include "tensorflow/lite/micro/micro_mutable_op_resolver.h"
 #include "tensorflow/lite/schema/schema_generated.h"
+#include "constants.h"
 
 #include "sine_model_data.h"
 
@@ -97,7 +98,7 @@ int main()
         {
             float y = output->data.f[0];
 
-            int x_pos = (int)((x / 6.28f) * (LCD_WIDTH - 1));
+            int x_pos = (int)((x / kXrange) * (LCD_WIDTH - 1));
 
             int y_pos = (LCD_HEIGHT / 2) -
                         (int)(y * (LCD_HEIGHT / 2 - 10));
@@ -116,9 +117,9 @@ int main()
             HAL_Delay(20);
         }
 
-        x += 0.1f;
+        x += kXrange / kInferencesPerCycle;
 
-        if (x > 6.28f)
+        if (x > kXrange)
         {
             x = 0.0f;
 
